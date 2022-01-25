@@ -1,5 +1,6 @@
-var road1,road2,road3,road4,bgImg,path1,path2,boy,boyImg,boy2,shop,shopImg,potionImage,potionsGroup;
+var road1,road2,road3,road4,bgImg,path1,path2,boy,boyImg,boy2,shop,shopImg;
 var bus,bus2,car1,car1a,car2,car2a,car3,car3a;
+var vehicleGroup;
 
 function preload(){
   bgImg=loadImage("images/road.jpg");
@@ -9,8 +10,6 @@ function preload(){
 
   shopImg=loadImage("images/Shop.png");
 
-  potionImage=loadImage("images/potion.png");
-
   bus=loadImage("images/bus.png");
   bus2=loadImage("images/bus2.png");
   car1=loadImage("images/car1.png");
@@ -19,6 +18,7 @@ function preload(){
   car2a=loadImage("images/car2a.png");
   car3=loadImage("images/car3.png");
   car3a=loadImage("images/car3a.png");
+
 }
 
 function setup() {
@@ -44,13 +44,14 @@ function setup() {
 
   boy = createSprite(640,590,20,20);
   boy.addAnimation("Running",boy2);
-  boy.scale=0.06;
+  boy.scale=0.045;
 
-  shop=createSprite(640,38.5,1280,75);
+  shop=createSprite(640,38.5,5,5);
   shop.addImage(shopImg);
   shop.scale=0.25;
 
-  potionsGroup = new Group();
+  vehicleGroup=new Group();
+
 }
 
 function draw() {
@@ -91,69 +92,137 @@ boy.velocityY=0;
 boy.addAnimation("Running",boy2);
 }
 
-spawnPotion();
+
+
+if(shop.isTouching(boy)){
+
+      if(keyWentDown(LEFT_ARROW)){
+          boy.velocityX=0;  
+      }
+      if(keyWentUp(LEFT_ARROW)){
+        boy.velocityX=0;
+      }
+      if(keyWentDown(RIGHT_ARROW)){
+        boy.velocityX=0;
+      }
+      if(keyWentUp(RIGHT_ARROW)){
+        boy.velocityX=0;
+      }
+      if(keyWentDown(DOWN_ARROW)){
+        boy.velocityY=0;
+      }
+      if(keyWentUp(DOWN_ARROW)){
+      boy.velocityY=0;
+      }
+      if(keyWentDown(UP_ARROW)){
+      boy.velocityY=0;    
+      }
+      if(keyWentUp(UP_ARROW)){
+      boy.velocityY=0;
+      }
+      vehicleGroup.setVelocityXEach(0);
+      vehicleGroup.setLifetimeEach(-1);
+   
+}
+
+
 spawnVehiclesLeft();
 spawnVehiclesRight();
+spawnVehiclesLeft1();
+spawnVehiclesRight1();
 
   drawSprites();
 }
 
-function spawnPotion() {
-  //write code here to spawn the potions
-  if (frameCount % 800 === 0) {
-    var potion = createSprite(Math.round(random(150,1220)),Math.round(random(200,550)),40,10);
-    potion.addImage(potionImage);
-    potion.scale = 0.05;
-
-    potion.lifetime = 400;
-    
-    potionsGroup.add(potion);
-  }
-  
-}
 
 function spawnVehiclesLeft(){
-  if(frameCount % 200 === 0){
-    var leftVehicle  = createSprite(1400,Math.round(random(200,550)),100,50);
+  if(frameCount % 130 === 0){
+    var leftVehicle  = createSprite(-50,Math.round(random(150,150)),100,50);
 
-    leftVehicle.velocityX = -3;
-    leftVehicle.scale = 2;
-    leftVehicle.lifetime = 500;
+    leftVehicle.velocityX = +6;
+    leftVehicle.scale = 0.18;
+    leftVehicle.lifetime = 320;
     
-    var rand = Math.round(random(1,4));
+    var rand = Math.round(random(1,3));
     switch(rand) {
-      case 1: obstacle.addImage(bus2);
+      case 1: leftVehicle.addImage(car1a);
               break;
-      case 2: obstacle.addImage(car1a);
+      case 2: leftVehicle.addImage(car2a);
               break;
-      case 3: obstacle.addImage(car2a);
-              break;
-      case 4: obstacle.addImage(car3a);
+      case 3: leftVehicle.addImage(car3a);
               break;
       default: break;
     }
+
+    vehicleGroup.add(leftVehicle);
   }
 }
 
 function spawnVehiclesRight(){
-  if(frameCount % 100 === 0){
-    var rightVehicle  = createSprite(-50,Math.round(random(200,550)),100,50);
+  if(frameCount % 200 === 0){
+    var rightVehicle  = createSprite(1400,Math.round(random(285,285)),100,50);
 
-    rightVehicle.velocityX = +3;
-    rightVehicle.scale = 2;
-    rightVehicle.lifetime = 500;
+    rightVehicle.velocityX = -5.5;
+    rightVehicle.scale = 0.18;
+    rightVehicle.lifetime = 320;
 
-    var rand = Math.round(random(1,4));
+    var rand = Math.round(random(1,3));
     switch(rand) {
-      case 1: obstacle.addImage(bus1);
+      case 1: rightVehicle.addImage(car1);
               break;
-      case 2: obstacle.addImage(car1);
+      case 2: rightVehicle.addImage(car2);
               break;
-      case 3: obstacle.addImage(car2);
-              break;
-      case 4: obstacle.addImage(car3);
+      case 3: rightVehicle.addImage(car3);
               break;
       default: break;
     }
+
+    vehicleGroup.add(rightVehicle);
+  }
+}
+
+function spawnVehiclesLeft1(){
+  if(frameCount % 100 === 0){
+    var leftVehicle  = createSprite(-50,Math.round(random(360,360)),100,50);
+
+    leftVehicle.velocityX = +7;
+    leftVehicle.scale = 0.18;
+    leftVehicle.lifetime = 320;
+    
+    var rand = Math.round(random(1,3));
+    switch(rand) {
+      case 1: leftVehicle.addImage(car1a);
+              break;
+      case 2: leftVehicle.addImage(car2a);
+              break;
+      case 3: leftVehicle.addImage(car3a);
+              break;
+      default: break;
+    }
+
+    vehicleGroup.add(leftVehicle);
+  }
+}
+
+function spawnVehiclesRight1(){
+  if(frameCount % 80 === 0){
+    var rightVehicle  = createSprite(1400,Math.round(random(435,435)),100,50);
+
+    rightVehicle.velocityX = -6.8;
+    rightVehicle.scale = 0.18;
+    rightVehicle.lifetime = 320;
+
+    var rand = Math.round(random(1,3));
+    switch(rand) {
+      case 1: rightVehicle.addImage(car1);
+              break;
+      case 2: rightVehicle.addImage(car2);
+              break;
+      case 3: rightVehicle.addImage(car3);
+              break;
+      default: break;
+    }
+
+    vehicleGroup.add(rightVehicle);
   }
 }
